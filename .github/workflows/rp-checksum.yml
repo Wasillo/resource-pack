@@ -1,0 +1,16 @@
+name: Resource pack checksum
+on:
+  push:
+    branches: [rp-checksums]
+permissions:
+  contents: read
+jobs:
+  checksum:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download and verify v9
+        run: |
+          curl --fail --location --retry 2 --max-time 120 'https://github.com/Wasillo/resource-pack/releases/download/v9/PepperChunk_RS_V174_LOBBY_STABILIZACJA.zip' -o pack.zip
+          test "$(wc -c < pack.zip)" = 151139519
+          echo 'fe9d96aa69ca64a7c5ab8d1bbf0f35f8ec3dfd4095469004bd7f56aedcbcc567  pack.zip' | sha256sum -c -
+          sha1sum pack.zip
